@@ -8,7 +8,7 @@ echo head(array(
 <div id="primary">
     <div id="exhibits-title" class="row page-header">
         <div class="col-xs-12">
-            <h1><span class="glyphicon glyphicon-eye-open"></span> <?php echo $title; ?> <?php echo __('(%s total)', $total_results); ?></h1>
+            <h1><?php echo $title; ?> <?php echo __('(%s total)', $total_results); ?></h1>
         </div>
     </div>
 <?php if (count($exhibits) > 0): ?>
