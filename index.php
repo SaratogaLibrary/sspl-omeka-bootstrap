@@ -61,15 +61,42 @@ endif;
 </div>
 <?php endif; ?>
 
-<div class="row home-features"> <?php // start about & tag cloud ?>
-    <div class="col-sm-4 home-stories"> <?php // about ?>
-        <?php if (get_theme_option('Display Featured Exhibit')
-            && plugin_is_active('ExhibitBuilder')
-            && function_exists('exhibit_builder_display_random_featured_exhibit')): ?>
-        <?php // Featured Exhibit. It uses the partial exhibits/single.php. ?>
-            <?php echo exhibit_builder_display_random_featured_exhibit(); ?>
-        <?php endif; ?>
-    </div><?php // end about ?>
+<div class="row home-features">
+<?php // start about & tag cloud
+    if (get_theme_option('Display Featured Exhibit')
+    && plugin_is_active('ExhibitBuilder')
+    && get_theme_option('Display Featured Exhibit Count') >= 0
+    && function_exists('exhibit_builder_recent_exhibits')) {
+        // Recent Featured Exhibits. It uses the partial exhibits/single.php; if set to 0, there is no (reasonable) limit
+        $count = get_theme_option('Display Featured Exhibit Count') ? get_theme_option('Display Featured Exhibit Count') : 10000;
+        //$count = 1;
+        if ($count == 1) {
+            $html = "\t<div class=\"col-sm-4 home-stories\">";
+            $html .= exhibit_builder_display_random_featured_exhibit();
+            $html .= "\t</div>";
+        } else {
+            $exhibits = exhibit_builder_recent_exhibits($count);
+            #$html .= '<h2>' . __('Featured Exhibit') . '</h2>';
+            #if ($featuredExhibit) {
+            #    $html .= get_view()->partial('exhibits/single.php', array('exhibit' => $featuredExhibit));
+            #} else {
+            #    $html .= '<p>' . __('You have no featured exhibits.') . '</p>';
+            #}
+            $html = '<h2>' . __('Featured Exhibits') . '</h2>';
+            if ($exhibits) {
+                foreach ($exhibits as $exhibit) {
+                    $html .= "\t<div class=\"col-sm-4 home-stories\">";
+                    $html .= get_view()->partial('exhibits/single.php', array('exhibit' => $exhibit));
+                    $html .= "\t</div>";
+                    // $html .= BOOTSTRAP CONTENT (vertical) DIVIDER
+                }
+            } else {
+                $html .= '<p>' . __('You have no featured exhibits.') . '</p>';
+            }
+        }
+        echo $html;
+    }
+?>
 
     <div class="col-sm-4 home-themes"><?php // tag cloud ?>
         <?php if (get_theme_option('Display Homepage Tags')): ?>
@@ -106,7 +133,8 @@ endif;
     <div class="col-sm-4 home-recents">
     <?php
         $recentItems = (integer) get_theme_option('Homepage Recent Items');
-        if ($recentItems): ?>
+        if ($recentItems):
+    ?>
         <div id="recent-items">
             <h2><?php echo __('Recently Added Items'); ?></h2>
             <?php echo recent_items($recentItems); ?>
