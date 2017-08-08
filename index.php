@@ -82,7 +82,7 @@ endif;
             #} else {
             #    $html .= '<p>' . __('You have no featured exhibits.') . '</p>';
             #}
-            $html = '<h2>' . __('Featured Exhibits') . '</h2>';
+            $html = '<div class="col-sm-12"><h2>' . __('Featured Exhibits') . '</h2></div>';
             if ($exhibits) {
                 foreach ($exhibits as $exhibit) {
                     $html .= "\t<div class=\"col-sm-4 home-stories\">";

@@ -1,4 +1,4 @@
-<nav id='nav-info'>
+<nav id='nav-info' class="col-sm-12">
 <?php
 // TODO Use Zend nav breadcrumbs (but the depth is low in Omeka).
 
@@ -10,7 +10,7 @@ if (is_current_url('/')):
     <div id="bread-info" class="breadcrumb">
         <span id="total-records">
     <?php
-    echo __('%s shares %s files and %s items in %s collections.',
+    echo __('%s contains %s files and %s items in %s collections.',
         '<em>' . option('site_title') . '</em>',
         '<strong>' . $totalFiles . '</strong>',
         '<strong>' . $totalItems . '</strong>',

@@ -25,8 +25,9 @@
 
     <!-- Stylesheets -->
     <?php
+    queue_css_url('//fonts.googleapis.com/css?family=Merriweather%7CPoppins');
     if (get_theme_option('Use Internal Bootstrap')) {
-        queue_css_file('bootstrap.min');
+        queue_css_file('bootstrap3.min');
         queue_css_file('font-awesome.min');
     } else {
         queue_css_url('//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css');
@@ -57,71 +58,73 @@
     echo head_js(); ?>
 </head>
 <?php echo body_tag(array('id' => @$bodyid, 'class' => @$bodyclass)); ?>
-    <!-- <a href="#content" id="skipnav"><?php echo __('Skip to main content'); ?></a> -->
+    <a href="#content" class="sr-only sr-only-focusable" id="to-content"><?php echo __('Skip to main content'); ?></a>
     <?php fire_plugin_hook('public_body', array('view' => $this)); ?>
     <?php if ($displayBanner): ?>
     <span id="corner-banner">
         <em><?php echo $displayBanner; ?></em>
     </span>
     <?php endif; ?>
-    <header id="header" role="banner" class="container">
-        <div class="row">
-            <div id="site-title" class="col-sm-6">
-                <div class="logoimg">
-                    <h1><?php echo link_to_home_page(str_replace('>', ' class="img-responsive">', theme_logo())); ?></h1>
+    <header class="header">
+        <nav class="navbar navbar-default">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <?php echo str_replace('/>', 'class="navbar-left" height="100" />', theme_logo()); ?>
+                    <h1 class="navbar-text visible-lg-inline"><?php echo link_to_home_page(); ?></h1>
+                </div>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <?php $nav = bootstrap_nav(public_nav_main(), array(
+                        'ulClass' => 'navigation nav navbar-nav navbar-right',
+                        'addExternalLinks' => false,
+                    ));
+                    echo $nav;
+
+                    // Set a second part of the navbar.
+                    $twitter = get_theme_option('Link Twitter');
+                    $facebook = get_theme_option('Link Facebook');
+                    if ($twitter || $facebook): ?>
+                    <ul class="nav navbar-nav navbar-right">
+                        <?php if ($twitter): ?>
+                        <li><a href="<?php echo $twitter; ?>" target="__blank" class="navbar-link"><span class="fa fa-lg fa-twitter"></span></a></li>
+                        <?php endif; ?>
+                        <?php if ($facebook): ?>
+                        <li><a href="<?php echo $facebook; ?>" target="__blank" class="navbar-link"><span class="fa fa-lg fa-facebook"></span></a></li>
+                        <?php endif; ?>
+                    </ul>
+                    <?php endif; ?>
+                </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+        </nav>
+    </header>
+    <?php fire_plugin_hook('public_header', array('view' => $this)); ?>
+    <section class="jumbotron hidden-xs">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <?php echo search_form(array(
+                        'show_advanced' => get_theme_option('Use Advanced Search'),
+                        'submit_value' => __('Search'),
+                        'form_attributes' => array('class' => 'form-search', 'role' => 'form'))); ?>
                 </div>
             </div>
-            <div id="search-container" class="col-sm-6" role="search">
-                <?php echo search_form(array(
-                    'show_advanced' => get_theme_option('Use Advanced Search'),
-                    'submit_value' => __('Search'),
-                    'form_attributes' => array('class' => 'form-search navbar-form navbar-right', 'role' => 'form'))); ?>
-            </div>
         </div>
-        <?php fire_plugin_hook('public_header', array('view' => $this)); ?>
-    </header>
-    <?php // Eventually remove the container to set the menu through screen. ?>
-    <div class="container">
-    <nav id="nav-wrap" class="navbar navbar-default">
-        <div class="container-fluid">
-            <?php // Brand and toggle get grouped for better mobile display ?>
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                    <span class="sr-only"><?php echo __('Toggle navigation'); ?></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <?php if ($navbarBrandText = get_theme_option('Navbar Brand Text')): ?>
-                <a class="navbar-brand" href="#"><?php echo $navbarBrandText; ?></a>
-                <?php endif; ?>
-            </div>
-            <div class="navbar-collapse collapse" id="navbar">
-                <?php $nav = bootstrap_nav(public_nav_main(), array(
-                    'ulClass' => 'navigation nav navbar-nav navbar-left',
-                    'addExternalLinks' => false,
-                ));
-                echo $nav;
+    </section>
 
-                // Set a second part of the navbar.
-                $twitter = get_theme_option('Link Twitter');
-                $facebook = get_theme_option('Link Facebook');
-                if ($twitter || $facebook): ?>
-                <ul class="nav navbar-nav navbar-right">
-                    <?php if ($twitter): ?>
-                    <li><a href="<?php echo $twitter; ?>" target="__blank" class="navbar-link"><span class="fa fa-lg fa-twitter"></span></a></li>
-                    <?php endif; ?>
-                    <?php if ($facebook): ?>
-                    <li><a href="<?php echo $facebook; ?>" target="__blank" class="navbar-link"><span class="fa fa-lg fa-facebook"></span></a></li>
-                    <?php endif; ?>
-                </ul>
-                <?php endif; ?>
-            </div>
-         </div>
-    </nav>
-    <?php if ($breadcrumb = get_theme_option('Display Breadcrumb Trail')):
-        echo common('breadcrumb', array('title' => @$title, 'mode' => $breadcrumb));
-    endif; ?>
-    </div>
-    <div class="container" id="wrapper">
-        <div id="content">
+    <section class="container">
+        <div class="row">
+            <?php if ($breadcrumb = get_theme_option('Display Breadcrumb Trail')):
+                echo common('breadcrumb', array('title' => @$title, 'mode' => $breadcrumb));
+            endif; ?>
+        </div>
+    </section>
+
+    <div id="wrapper">
+        <div class="container" id="content">
