@@ -1,9 +1,9 @@
 <?php echo $this->form('search-form', $options['form_attributes']); ?>
-    <div class="input-group">
+    <div class="input-group input-group-lg">
         <?php echo $this->formText('query', $filters['query'], array(
             'title' => __('Search'),
-            'class' => 'search-query',
-            'placeholder' => __('Search'),
+            'class' => 'search-query form-control',
+            'placeholder' => __('Search our digital archives…'),
         )); ?>
         <span class="input-group-btn">
     <?php if ($options['show_advanced']): ?>
@@ -15,6 +15,8 @@
                 'type' => 'submit',
                 'class' => 'btn btn-default',
                 'content' => '<span class="glyphicon glyphicon-search"></span>',
+                'aria-hidden' => "true",
+                'aria-label' => 'Search',
                 'escape' => false,
             )); ?>
         </span>

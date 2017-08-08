@@ -9,7 +9,7 @@ echo head(array(
 <div id="primary">
     <div class="row page-header">
         <div class="col-xs-12">
-            <h1><span class="glyphicon glyphicon-list"></span> <?php echo $pageTitle; ?> <small><span class="glyphicon glyphicon-tags"></span> <?php echo __('By Current Tags'); ?></small></h1>
+            <h1><?php echo $pageTitle; ?> <small><span class="glyphicon glyphicon-tags"></span> <?php echo __('By Current Tags'); ?></small></h1>
         </div>
     </div>
     <nav class="items-nav navigation secondary-nav">
