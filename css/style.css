@@ -809,6 +809,18 @@ footer ul li {
 .label {
     padding:.1em .3em .1em;
 }
+#exhibit-pages ul {
+    list-style:decimal;
+    padding-left:40px;
+}
+#exhibit-pages ul li {
+    padding:0;
+}
+#exhibit-pages ul li a {
+    padding:0;
+    margin:0;
+    display:inline;
+}
 
 /* Responsive-specific adjustments */
 @media (max-width: 767px) {
@@ -831,4 +843,33 @@ footer ul li {
 	.copyright {
 		text-align:center;
 	}
+}
+
+@media print {
+    #admin-bar,
+    header,
+    footer,
+    section.jumbotron,
+    section.container,
+    #exhibit-pages,
+    #exhibit-page-navigation,
+    .col-sm-3 /* exhibit page nav */,
+    #to-content {
+        display:none;
+    }
+
+    * {
+        font: 13pt "Times New Roman", Times, serif;
+    }
+
+    /* Portion of the (not already hidden) theme that contains the content */
+    .col-sm-9 {
+        width:100%;
+        margin:0;
+        padding:0;
+    }
+
+    a[href]:after {
+        content:none;
+    }
 }
