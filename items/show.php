@@ -82,12 +82,6 @@ else:
                     <div class="element-text"><?php echo output_format_list(); ?></div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-xs-12">
-                    <hr />
-                    <?php fire_plugin_hook('public_items_show', array('view' => $this, 'item' => $item)); ?>
-                </div>
-            </div>
         </div>
         <!-- The following returns all of the files associated with an item. -->
         <div id="itemfiles" class="col-md-6">
@@ -107,6 +101,13 @@ else:
                 null);
             ?></div>
             <?php endif; ?>
+            <div class="row">
+                <div class="col-xs-12">
+                    <hr />
+                    <h3><?php echo __('Interactive Version'); ?></h3>
+                    <?php fire_plugin_hook('public_items_show', array('view' => $this, 'item' => $item)); ?>
+                </div>
+            </div>
         </div>
     </div>
 <?php endif; ?>
